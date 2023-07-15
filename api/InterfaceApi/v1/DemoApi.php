@@ -91,6 +91,8 @@ class DemoApi
 
     /**
      * 获取用户信息
+     *
+     * @param UserInfoRequest $userInfoRequest
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
