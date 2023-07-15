@@ -5,6 +5,7 @@
 /runtime
 *.log
 .env
+makefile
 .gitee
 public/uploadfile/*
 web/*
