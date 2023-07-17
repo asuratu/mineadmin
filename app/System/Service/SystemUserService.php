@@ -121,7 +121,7 @@ class SystemUserService extends AbstractService implements UserServiceInterface
      * @param array $roleData
      * @return array
      */
-    protected function filterMenuIds(array &$roleData): array
+    protected function filterMenuIds(array $roleData): array
     {
         $ids = [];
         foreach ($roleData as $val) {
