@@ -10,28 +10,34 @@
  */
 
 declare(strict_types=1);
+
 namespace Api;
 
+use Api\Middleware\VerifyInterfaceMiddleware;
 use App\System\Service\SystemAppService;
+use Hyperf\Di\Annotation\AnnotationCollector;
+use Hyperf\Di\Annotation\MultipleAnnotation;
+use Hyperf\Di\ReflectionManager;
+use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\Validation\Request\FormRequest;
+use Hyperf\Validation\ValidationException;
 use Mine\Exception\NoPermissionException;
 use Mine\Exception\NormalStatusException;
 use Mine\Exception\TokenException;
 use Mine\Helper\MineCode;
 use Mine\MineApi;
-use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\HttpServer\Annotation\RequestMapping;
-use Hyperf\Di\Annotation\AnnotationCollector;
-use Hyperf\Di\Annotation\MultipleAnnotation;
-use Hyperf\Di\ReflectionManager;
-use Hyperf\Validation\Request\FormRequest;
-use Hyperf\Validation\ValidationException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use Api\Middleware\VerifyInterfaceMiddleware;
+use Psr\SimpleCache\InvalidArgumentException;
+use Throwable;
 
 /**
  * Class ApiController
+ *
  * @package Api
  */
 #[Controller(prefix: "api")]
@@ -41,10 +47,11 @@ class ApiController extends MineApi
 
     /**
      * 获取accessToken
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      */
     #[PostMapping("v1/getAccessToken")]
     public function getAccessToken(): ResponseInterface
@@ -55,12 +62,13 @@ class ApiController extends MineApi
 
     /**
      * v1 版本
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[RequestMapping("v1/{method}")]
-    #[Middlewares([ VerifyInterfaceMiddleware::class ])]
+    #[Middlewares([VerifyInterfaceMiddleware::class])]
     public function v1(): ResponseInterface
     {
         $apiData = $this->__init();
@@ -86,7 +94,7 @@ class ApiController extends MineApi
             }
             // 反射调用
             return $reflectionMethod->invokeArgs($class, $args);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             if ($e instanceof ValidationException) {
                 // 抛出的是验证异常 取一条错误信息返回
                 $errors = $e->errors();
@@ -97,20 +105,21 @@ class ApiController extends MineApi
                 throw new NormalStatusException(t('mineadmin.interface_exception') . $error, MineCode::INTERFACE_EXCEPTION);
             }
             if ($e instanceof NoPermissionException) {
-                throw new NormalstatusException( t( key: 'mineadmin.api_auth_fail') . $e->getMessage(), code: MineCode::NO_PERMISSION);
+                throw new NormalstatusException(t(key: 'mineadmin.api_auth_fail') . $e->getMessage(), code: MineCode::NO_PERMISSION);
             }
             if ($e instanceof TokenException) {
-                throw new NormalstatusException( t( key: 'mineadmin.api_auth_exception') . $e->getMessage(), code: MineCode::TOKEN_EXPIRED);
+                throw new NormalstatusException(t(key: 'mineadmin.api_auth_exception') . $e->getMessage(), code: MineCode::TOKEN_EXPIRED);
             }
 
-            throw new NormalstatusException( t( key: 'mineadmin.interface_exception') . $e->getMessage(), code: MineCode::INTERFACE_EXCEPTION);
+            throw new NormalstatusException(t(key: 'mineadmin.interface_exception') . $e->getMessage(), code: MineCode::INTERFACE_EXCEPTION);
         }
     }
 
     /**
      * 初始化
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function __init()
     {
@@ -125,7 +134,7 @@ class ApiController extends MineApi
     {
         /** @var null|MultipleAnnotation $scene */
         $scene = AnnotationCollector::getClassMethodAnnotation($class, $method)[Scene::class] ?? null;
-        if (! $scene) {
+        if (!$scene) {
             return;
         }
 

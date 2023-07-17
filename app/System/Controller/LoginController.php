@@ -1,10 +1,12 @@
 <?php
 
 declare(strict_types=1);
+
 namespace App\System\Controller;
 
 use App\System\Request\SystemUserRequest;
 use App\System\Service\SystemUserService;
+use Exception;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -14,10 +16,14 @@ use Mine\Helper\LoginUser;
 use Mine\Interfaces\UserServiceInterface;
 use Mine\MineController;
 use Mine\Vo\UserServiceVo;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class LoginController
+ *
  * @package App\System\Controller
  */
 #[Controller(prefix: "system")]
@@ -32,9 +38,9 @@ class LoginController extends MineController
     /**
      * @param SystemUserRequest $request
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      */
     #[PostMapping("login")]
     public function login(SystemUserRequest $request): ResponseInterface
@@ -48,9 +54,9 @@ class LoginController extends MineController
 
     /**
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      */
     #[PostMapping("logout"), Auth]
     public function logout(): ResponseInterface
@@ -61,9 +67,10 @@ class LoginController extends MineController
 
     /**
      * 用户信息
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[GetMapping("getInfo"), Auth]
     public function getInfo(): ResponseInterface
@@ -73,11 +80,12 @@ class LoginController extends MineController
 
     /**
      * 刷新token
+     *
      * @param LoginUser $user
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      */
     #[PostMapping("refresh")]
     public function refresh(LoginUser $user): ResponseInterface
@@ -87,10 +95,11 @@ class LoginController extends MineController
 
     /**
      * 获取每日的必应背景图
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      */
     #[GetMapping("getBingBackgroundImage")]
     public function getBingBackgroundImage(): ResponseInterface
@@ -98,13 +107,13 @@ class LoginController extends MineController
         try {
             $response = file_get_contents('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1');
             $content = json_decode($response);
-            if (! empty($content?->images[0]?->url)) {
+            if (!empty($content?->images[0]?->url)) {
                 return $this->success([
                     'url' => 'https://cn.bing.com' . $content?->images[0]?->url
                 ]);
             }
-            throw new \Exception;
-        } catch (\Exception $e) {
+            throw new Exception;
+        } catch (Exception $e) {
             return $this->error('获取必应背景失败');
         }
     }

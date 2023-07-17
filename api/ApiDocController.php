@@ -10,21 +10,25 @@
  */
 
 declare(strict_types=1);
+
 namespace Api;
 
 use App\System\Service\SystemApiService;
 use App\System\Service\SystemAppService;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Mine\Annotation\Api\MApiCollector;
 use Mine\Helper\MineCode;
 use Mine\MineApi;
-use Hyperf\HttpServer\Annotation\Controller;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use Mine\Annotation\Api\MApiCollector;
 
 /**
  * Class ApiDocController
+ *
  * @package Api
  */
 #[Controller(prefix: "apiDoc")]
@@ -44,9 +48,10 @@ class ApiDocController extends MineApi
 
     /**
      * 登录文档
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[PostMapping("login")]
     public function login(): ResponseInterface
@@ -67,10 +72,11 @@ class ApiDocController extends MineApi
 
     /**
      * 通过app id获取接口数据
+     *
      * @param string $id
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[GetMapping("getAppAndInterfaceList/{id}")]
     public function getAppAndInterfaceList(string $id): ResponseInterface
@@ -89,8 +95,8 @@ class ApiDocController extends MineApi
     /**
      * @param string $id
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[GetMapping("getColumnList/{id}")]
     public function getColumnList(string $id): ResponseInterface

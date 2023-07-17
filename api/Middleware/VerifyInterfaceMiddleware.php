@@ -22,6 +22,7 @@ use Mine\Annotation\Api\MApiCollector;
 use Hyperf\Context\Context;
 use Mine\Exception\NormalStatusException;
 use Mine\Helper\MineCode;
+use Mine\MineModel;
 use Mine\MineRequest;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,6 +31,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\SimpleCache\InvalidArgumentException;
+use Throwable;
 
 class VerifyInterfaceMiddleware implements MiddlewareInterface
 {
@@ -47,7 +50,7 @@ class VerifyInterfaceMiddleware implements MiddlewareInterface
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler):ResponseInterface
     {
@@ -60,7 +63,7 @@ class VerifyInterfaceMiddleware implements MiddlewareInterface
      * @return int
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function auth(ServerRequestInterface $request): int
     {
@@ -87,7 +90,7 @@ class VerifyInterfaceMiddleware implements MiddlewareInterface
                 default:
                     throw new \RuntimeException();
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new NormalStatusException(t('mineadmin.api_auth_exception'), MineCode::API_AUTH_EXCEPTION);
         }
     }
@@ -107,7 +110,7 @@ class VerifyInterfaceMiddleware implements MiddlewareInterface
             $apiModel = $apiData[$mineRequest->route('method')];
 
             // 检查接口是否停用
-            if ($apiModel['status'] == SystemApi::DISABLE) {
+            if ($apiModel['status'] == MineModel::DISABLE) {
                 throw new NormalStatusException(t('mineadmin.api_stop'), MineCode::RESOURCE_STOP);
             }
 
@@ -166,7 +169,7 @@ class VerifyInterfaceMiddleware implements MiddlewareInterface
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function run(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

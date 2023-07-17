@@ -19,7 +19,7 @@ class SystemDeptMapper extends AbstractMapper
      */
     public $model;
 
-    public function assignModel()
+    public function assignModel(): void
     {
         $this->model = SystemDept::class;
     }
@@ -30,17 +30,19 @@ class SystemDeptMapper extends AbstractMapper
      */
     public function getSelectTree(): array
     {
-        $treeData = $this->model::query()->select(['id', 'parent_id', 'id AS value', 'name AS label'])
+        $treeData = $this->model::query()
+            ->select(['id', 'parent_id', 'id AS value', 'name AS label'])
             ->where('status', $this->model::ENABLE)
             ->orderBy('parent_id')
             ->orderBy('sort', 'desc')
             ->userDataScope()
-            ->get()->toArray();
+            ->get()
+            ->toArray();
         return (new MineCollection())->toTree($treeData, $treeData[0]['parent_id'] ?? 0);
     }
 
     /**
-     * 获取部门领导列表
+     * 获取部门的领导列表
      * @param array|null $params
      * @return array
      */

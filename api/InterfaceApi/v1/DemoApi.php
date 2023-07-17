@@ -11,17 +11,16 @@
 
 namespace Api\InterfaceApi\v1;
 
+use Api\Request\v1\UserInfoRequest;
 use App\System\Mapper\SystemDeptMapper;
 use App\System\Mapper\SystemUserMapper;
+use Mine\Annotation\Api\MApi;
+use Mine\Annotation\Api\MApiRequestParam;
+use Mine\Annotation\Api\MApiResponseParam;
 use Mine\MineResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use Mine\Annotation\Api\MApi;
-use Mine\Annotation\Api\MApiRequestParam;
-use Mine\Annotation\Api\MApiResponseParam;
-use Api\Request\v1\DemoApiRequest;
-use Api\Request\v1\UserInfoRequest;
 
 /**
  * 演示，测试专用
@@ -42,6 +41,7 @@ class DemoApi
 
     /**
      * DemoApi constructor.
+     *
      * @param SystemUserMapper $user
      * @param SystemDeptMapper $dept
      * @throws ContainerExceptionInterface
@@ -56,13 +56,13 @@ class DemoApi
 
     /**
      * 获取用户列表接口
+     *
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     // appId 换成自己的 groupId 换成自己的 (前端更新，这两个必须有，后台才能看到文档
-    #[MApi(accessName: "getUserList", name: "获取用户列表接口", description: "获取用户列表接口", appId: "a7ccdef6d7", groupId: 3)]
-
+    #[MApi(accessName: "getUserList", name: "获取用户列表接口", description: "获取用户列表接口", appId: "4957ebb4a8", groupId: 1)]
     # 响应出参 以下注解暂时仅仅用于生成文档
     #[MApiResponseParam(name: 'data.items', description: "用户信息", dataType: 'Array')]
     #[MApiResponseParam(name: 'data.pageInfo', description: "分页信息", dataType: 'Array')]
@@ -74,6 +74,7 @@ class DemoApi
 
     /**
      * 获取部门列表接口
+     *
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -81,7 +82,7 @@ class DemoApi
     // appId 换成自己的 groupId 换成自己的 (前端更新，这两个必须有，后台才能看到文档
     #[MApi(accessName: "getDeptList", name: "获取部门列表接口", description: "获取部门列表接口", appId: "a7ccdef6d7", groupId: 3)]
     # 响应出参 以下注解暂时仅仅用于生成文档
-    
+
     #[MApiResponseParam(name: 'data', description: "部门信息", dataType: 'Array')]
     public function getDeptList(): ResponseInterface
     {
@@ -99,10 +100,8 @@ class DemoApi
      */
     // appId 换成自己的 groupId 换成自己的 (前端更新，这两个必须有，后台才能看到文档
     #[MApi(accessName: "getUserInfo", name: "获取用户信息", description: "获取用户信息", appId: "a7ccdef6d7", groupId: 3)]
-    
     # 请求入参 以下注解暂时仅仅用于生成文档 仅仅作为示例，可以没有
     #[MApiRequestParam(name: 'id', description: "用户id", dataType: 'Integer')]
-    
     # 响应出参 以下注解暂时仅仅用于生成文档
     #[MApiResponseParam(name: 'info', description: "用户信息", dataType: 'Object')]
     public function getUserInfo(UserInfoRequest $userInfoRequest): ResponseInterface
@@ -110,7 +109,7 @@ class DemoApi
 
         // 标准formRequest
         $data = $userInfoRequest->validated();
-        $info = $this->user->get(function($query) use ($data) {
+        $info = $this->user->get(function ($query) use ($data) {
             $query->where('id', $data['id']);
         });
 

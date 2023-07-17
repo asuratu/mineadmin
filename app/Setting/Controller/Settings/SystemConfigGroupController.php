@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace App\Setting\Controller\Settings;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use App\Setting\Request\SettingConfigGroupRequest;
 use App\Setting\Service\SettingConfigGroupService;
@@ -31,9 +33,10 @@ class SystemConfigGroupController extends MineController
 
     /**
      * 获取系统组配置
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[GetMapping("index"), Permission("setting:config, setting:config:index")]
     public function index(): ResponseInterface
@@ -43,10 +46,11 @@ class SystemConfigGroupController extends MineController
 
     /**
      * 保存配置组
+     *
      * @param SettingConfigGroupRequest $request
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[PostMapping("save"), Permission("setting:config:save"), OperationLog("保存配置组")]
     public function save(SettingConfigGroupRequest $request): ResponseInterface
@@ -56,10 +60,11 @@ class SystemConfigGroupController extends MineController
 
     /**
      * 更新配置组
+     *
      * @param SettingConfigGroupRequest $request
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[PostMapping("update"), Permission("setting:config:update"), OperationLog("更新配置组")]
     public function update(SettingConfigGroupRequest $request): ResponseInterface
@@ -69,9 +74,10 @@ class SystemConfigGroupController extends MineController
 
     /**
      * 删除配置组
+     *
      * @return ResponseInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[DeleteMapping("delete"), Permission("setting:config:delete"), OperationLog("删除配置组")]
     public function delete(): ResponseInterface
@@ -81,7 +87,10 @@ class SystemConfigGroupController extends MineController
 
     /**
      * 远程万能通用列表接口
+     *
      * @return ResponseInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[PostMapping("remote"), RemoteState(true)]
     public function remote(): ResponseInterface
