@@ -22,6 +22,7 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\Validation\Annotation\Scene;
 use Hyperf\Validation\Request\FormRequest;
 use Hyperf\Validation\ValidationException;
 use Mine\Exception\NoPermissionException;
@@ -88,7 +89,7 @@ class ApiController extends MineApi
                 $args[] = $formRequest;
                 if ($formRequest instanceof FormRequest) {
                     $this->handleSceneAnnotation($formRequest, $apiData['class_name'], $apiData['method_name'], $parameter->getName());
-                    // 验证， 这里逻辑和 验证中间件一样 直接抛异常 
+                    // 验证, 这里逻辑和 验证中间件一样 直接抛异常
                     $formRequest->validateResolved();
                 }
             }

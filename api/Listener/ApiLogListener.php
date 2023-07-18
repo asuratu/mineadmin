@@ -14,10 +14,12 @@ namespace Api\Listener;
 use App\System\Service\SystemApiLogService;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
+use Hyperf\Utils\Coroutine;
 use Mine\Event\ApiAfter;
 use Mine\Helper\Str;
 use Mine\MineRequest;
-use Hyperf\Utils\Coroutine;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * API访问日志保存
@@ -28,6 +30,7 @@ class ApiLogListener implements ListenerInterface
 
     /**
      * 监听事件
+     *
      * @return string[]
      */
     public function listen(): array
@@ -39,22 +42,20 @@ class ApiLogListener implements ListenerInterface
 
     /**
      * 事件处理
+     *
      * @param object $event
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function process(object $event): void
     {
-
-        
-        /* @var $event ApiAfter */
         $data = $event->getApiData();
         $request = container()->get(MineRequest::class);
         $service = container()->get(SystemApiLogService::class);
 
         if (empty($data)) {
             // 只记录异常日志，但并不抛出异常，程序正常走下去
-            logger('Api Access Log')->error('API数据为空，访问日志无法记录，以下为 Request 信息：'. json_encode($request));
+            logger('Api Access Log')->error('API数据为空，访问日志无法记录，以下为 Request 信息：' . json_encode($request));
         } else {
             // 保存日志
             $reqData = $request->getParsedBody();
@@ -78,14 +79,14 @@ class ApiLogListener implements ListenerInterface
             $ip = $request->ip();
             $ipLocation = Str::ipToRegion($ip);
             $accessTime = date('Y-m-d H:i:s');
-            Coroutine::create(function() use ($service, $app_id, $data, $reqData, $queryParams, $responseCode, $responseData, $ip, $ipLocation, $accessTime) {
+            Coroutine::create(function () use ($service, $app_id, $data, $reqData, $queryParams, $responseCode, $responseData, $ip, $ipLocation, $accessTime) {
                 // 随机延时写入
                 sleep(rand(5, 30));
                 $service->save([
                     'api_id' => $app_id,
                     'api_name' => $data['name'],
                     'access_name' => $data['access_name'],
-                    'request_data' => [ 'data' => $reqData, 'params' => $queryParams ],
+                    'request_data' => ['data' => $reqData, 'params' => $queryParams],
                     'response_code' => $responseCode,
                     // 'response_data' => $responseData,
                     'ip' => $ip,
