@@ -33,9 +33,9 @@ class UserMapper extends AbstractMapper
         return $query;
     }
 
-    public function existsByUsername(string $name): bool
+    public function existsByColumn(string $column, string $str): bool
     {
-        return $this->model::where('username', $name)->exists();
+        return $this->model::where($column, $str)->exists();
     }
 
 }

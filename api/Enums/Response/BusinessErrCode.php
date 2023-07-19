@@ -8,8 +8,7 @@ use Lishun\Enums\Interfaces\EnumCodeInterface;
 use Lishun\Enums\Traits\EnumCodeGet;
 
 #[EnumCodePrefix(20, '业务错误码')]
-enum
-BusinessErrCode: int implements EnumCodeInterface
+enum BusinessErrCode: int implements EnumCodeInterface
 {
     use EnumCodeGet;
 
@@ -21,4 +20,7 @@ BusinessErrCode: int implements EnumCodeInterface
 
     #[EnumCode('业务错误2', ext: ['test' => 1])]
     case REST_ERROR2 = 502;
+
+    #[EnumCode('用户已存在')]
+    case USER_EXIST = 1001;
 }
