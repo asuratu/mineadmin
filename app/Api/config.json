@@ -1,0 +1,9 @@
+{
+    "name": "Api",
+    "label": "前台业务模块",
+    "description": "为客户端提供业务接口",
+    "installed": true,
+    "enabled": true,
+    "version": "1.0.0",
+    "order": 0
+}

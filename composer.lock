@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90d6294f06a33bf77fbc8d81dd669ca8",
+    "content-hash": "6b87d4311f8dbe815f1e978ee4763126",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -4438,6 +4438,58 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "lishun/enums",
+            "version": "1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lishuncoder/enums.git",
+                "reference": "f5c425749a0eac1f8ab610c46d7e0ee5e5c2295c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lishuncoder/enums/zipball/f5c425749a0eac1f8ab610c46d7e0ee5e5c2295c",
+                "reference": "f5c425749a0eac1f8ab610c46d7e0ee5e5c2295c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lishun\\Enums\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lishun",
+                    "email": "411906015@qq.com"
+                }
+            ],
+            "description": "php enums tools",
+            "keywords": [
+                "enum",
+                "enumeration",
+                "library",
+                "php8.1"
+            ],
+            "support": {
+                "issues": "https://github.com/lishuncoder/enums/issues",
+                "source": "https://github.com/lishuncoder/enums/tree/1.0.10"
+            },
+            "time": "2023-04-28T07:41:31+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -11789,5 +11841,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

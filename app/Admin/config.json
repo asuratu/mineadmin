@@ -1,0 +1,9 @@
+{
+    "name": "Admin",
+    "label": "后台模块",
+    "description": "业务后台管理功能",
+    "installed": true,
+    "enabled": true,
+    "version": "1.0.0",
+    "order": 0
+}

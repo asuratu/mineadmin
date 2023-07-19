@@ -9,3 +9,4 @@ makefile
 .gitee
 public/uploadfile/*
 web/*
+*.cache

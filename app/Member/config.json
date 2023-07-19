@@ -1,9 +1,0 @@
-{
-    "name": "Member",
-    "label": "会员模块",
-    "description": "前台会员管理",
-    "installed": true,
-    "enabled": true,
-    "version": "1.0.0",
-    "order": 0
-}
