@@ -30,7 +30,7 @@ class AuthController extends BaseController
     #[PostMapping("register")]
     public function registerByAccount(): ResponseInterface
     {
-        return $this->errRspWithData(BusinessErrCode::REST_ERROR, ['111test' => 'test1']);
+        return $this->errRspWithData(BusinessErrCode::REST_ERROR, ['test' => 'test']);
 
         //        $userinfo = $this->save($data);
         //        // 用户信息转数组

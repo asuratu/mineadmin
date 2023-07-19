@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b87d4311f8dbe815f1e978ee4763126",
+    "content-hash": "a30719463ac3866c0a53107a06095ca3",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -9444,7 +9444,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/hyperf/watcher/zipball/340fdf99419cc586889e61546c3172aada4c553b",
                 "reference": "340fdf99419cc586889e61546c3172aada4c553b",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-posix": "*",
