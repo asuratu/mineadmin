@@ -5,6 +5,7 @@ namespace App\Api\Mapper;
 
 use App\Api\Model\User;
 use Hyperf\Database\Model\Builder;
+use Hyperf\Database\Model\Model;
 use Mine\Abstracts\AbstractMapper;
 
 /**
@@ -36,6 +37,12 @@ class UserMapper extends AbstractMapper
     public function existsByColumn(string $column, string $str): bool
     {
         return $this->model::where($column, $str)->exists();
+    }
+
+    public function create(array $data): Model
+    {
+        $this->filterExecuteAttributes($data, $this->getModel()->incrementing);
+        return $this->model::create($data);
     }
 
 }
