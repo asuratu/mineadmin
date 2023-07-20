@@ -12,6 +12,7 @@ class AlterUsersTableV1 extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->tinyInteger('status')->default(0)->comment('状态 (0正常 1停用)');
             $table->string('phone', 20)->default("")->comment('手机号码');
             $table->string('login_ip', 50)->default("")->comment('登录IP地址');
             $table->dateTime('login_time')->nullable()->comment('登录时间');
@@ -24,7 +25,7 @@ class AlterUsersTableV1 extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['phone', 'login_ip', 'login_time']);
+            $table->dropColumn(['status', 'phone', 'login_ip', 'login_time']);
         });
     }
 }

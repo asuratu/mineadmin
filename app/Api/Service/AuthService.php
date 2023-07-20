@@ -3,12 +3,17 @@ declare(strict_types=1);
 
 namespace App\Api\Service;
 
+use Api\Enums\Response\BusinessErrCode;
 use Api\Enums\Response\JwtErrCode;
+use Api\Enums\User\UserStatus;
 use Api\Exception\BusinessException;
 use App\Api\Event\ApiUserLoginAfter;
 use App\Api\Mapper\UserMapper;
+use App\Shop\Model\ShopUser;
 use Hyperf\Di\Annotation\Inject;
 use Mine\Abstracts\AbstractService;
+use Mine\Constants\StatusCode;
+use Mine\Event\UserLoginBefore;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -36,8 +41,12 @@ class AuthService extends AbstractService
     }
 
     /**
-     * @throws NotFoundExceptionInterface
+     * @Title  : 用户账号密码注册
+     * @param array $data
+     * @return array
      * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @author AsuraTu
      */
     public function registerByAccount(array $data): array
     {
@@ -66,5 +75,44 @@ class AuthService extends AbstractService
 
     }
 
+    /**
+     * @Title  : 用户账号密码登录
+     * @param array $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
+     * @throws NotFoundExceptionInterface
+     * @author AsuraTu
+     */
+    public function loginByAccount(array $data): array
+    {
+        $this->evDispatcher->dispatch(new UserLoginBefore($data));
+        $userinfo = $this->mapper->checkByColumn('name', $data['name']);
+        $userinfoArr = $userinfo->toArray();
+        $password = $userinfoArr['password'];
+        unset($userinfoArr['password']);
+        $userLoginAfter = new ApiUserLoginAfter($userinfoArr);
+
+        if (!$this->mapper->checkPass($data['password'], $password)) {
+            throw new BusinessException(BusinessErrCode::USER_PASSWORD_ERROR);
+        }
+
+        if ($userinfo['status'] == UserStatus::USER_BAN) {
+            $userLoginAfter->loginStatus = false;
+            $userLoginAfter->message = BusinessErrCode::USER_BAN->getMsg();
+            $this->evDispatcher->dispatch($userLoginAfter);
+            throw new BusinessException(BusinessErrCode::USER_BAN);
+        }
+
+        $userLoginAfter->message = t('jwt.login_success');
+        $token = user('api')->getToken($userLoginAfter->userinfo);
+        $userLoginAfter->token = $token;
+        $this->evDispatcher->dispatch($userLoginAfter);
+
+        return [
+            'userinfo' => $userinfo,
+            'token' => $token,
+        ];
+    }
 
 }

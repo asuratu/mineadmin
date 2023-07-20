@@ -22,18 +22,6 @@ class UserMapper extends AbstractMapper
         $this->model = User::class;
     }
 
-    /**
-     * 搜索处理器
-     *
-     * @param Builder $query
-     * @param array   $params
-     * @return Builder
-     */
-    public function handleSearch(Builder $query, array $params): Builder
-    {
-        return $query;
-    }
-
     public function existsByColumn(string $column, string $str): bool
     {
         return $this->model::where($column, $str)->exists();
@@ -43,6 +31,19 @@ class UserMapper extends AbstractMapper
     {
         $this->filterExecuteAttributes($data, $this->getModel()->incrementing);
         return $this->model::create($data);
+    }
+
+    public function checkByColumn(string $column, string $str): Model|Builder
+    {
+        // 使用模型缓存
+        return $this->model::query()
+            ->where($column, $str)
+            ->firstOrFail();
+    }
+
+    public function checkPass(string $password, string $hash): bool
+    {
+        return $this->model::passwordVerify($password, $hash);
     }
 
 }

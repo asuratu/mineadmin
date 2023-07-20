@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * This file is part of Hyperf.
  *
@@ -19,6 +20,7 @@ return [
             Mine\Exception\Handler\NoPermissionExceptionHandler::class,
             Mine\Exception\Handler\NormalStatusExceptionHandler::class,
             Mine\Exception\Handler\AppExceptionHandler::class,
+            Api\Exception\Handler\ModelNotFoundExceptionHandler::class,
         ],
     ],
 ];

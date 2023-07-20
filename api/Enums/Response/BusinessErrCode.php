@@ -23,4 +23,16 @@ enum BusinessErrCode: int implements EnumCodeInterface
 
     #[EnumCode('用户已存在')]
     case USER_EXIST = 1001;
+
+    #[EnumCode('对象不存在')]
+    case OBJECT_NOT_EXIST = 1002;
+
+    #[EnumCode('用户已被禁用')]
+    case USER_BAN = 1003;
+
+    #[EnumCode('用户不存在')]
+    case USER_NOT_EXIST = 1004;
+
+    #[EnumCode('用户密码错误')]
+    case USER_PASSWORD_ERROR = 1005;
 }
