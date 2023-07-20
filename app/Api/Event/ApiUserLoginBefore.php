@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace App\APi\Event;
+namespace App\Api\Event;
 
 class ApiUserLoginBefore
 {

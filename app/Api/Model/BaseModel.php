@@ -11,95 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Mine;
+namespace App\Api\Model;
 
-use Hyperf\DbConnection\Model\Model;
-use Hyperf\ModelCache\Cacheable;
-use Mine\Traits\ModelMacroTrait;
+use Mine\MineModel;
 
 /**
  * Class MineModel
  *
  * @package Mine
  */
-class BaseModel extends Model
+class BaseModel extends MineModel
 {
-    use Cacheable, ModelMacroTrait;
-
-    /**
-     * 状态
-     */
-    public const ENABLE = 1;
-    public const DISABLE = 2;
-
-    /**
-     * 默认每页记录数
-     */
     public const PAGE_SIZE = 20;
-
-    /**
-     * 隐藏的字段列表
-     *
-     * @var string[]
-     */
-    protected array $hidden = ['deleted_at'];
-
-    /**
-     * MineModel constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        //注册常用方法
-        $this->registerBase();
-    }
-
-    /**
-     * 设置主键的值
-     *
-     * @param string | int $value
-     */
-    public function setPrimaryKeyValue($value): void
-    {
-        $this->{$this->primaryKey} = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrimaryKeyType(): string
-    {
-        return $this->keyType;
-    }
-
-    /**
-     * @param array $options
-     * @return bool
-     */
-    public function save(array $options = []): bool
-    {
-        return parent::save($options);
-    }
-
-    /**
-     * @param array $attributes
-     * @param array $options
-     * @return bool
-     */
-    public function update(array $attributes = [], array $options = []): bool
-    {
-        return parent::update($attributes, $options);
-    }
-
-    /**
-     * @param array $models
-     * @return MineCollection
-     */
-    public function newCollection(array $models = []): MineCollection
-    {
-        return new MineCollection($models);
-    }
 }

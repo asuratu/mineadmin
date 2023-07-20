@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Shop\Request\Users;
+namespace App\Api\Request\Users;
 
-use Hyperf\Validation\Request\FormRequest;
+use Mine\MineApiFormRequest;
 
 /**
- * 用户管理验证数据类 (Update)
+ * 用户账号密码注册验证数据类.
  */
-class ShopUsersUpdateRequest extends FormRequest
+class UserRegisterRequest extends MineApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,8 @@ class ShopUsersUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'name' => 'required|max:20',
+            'password' => 'required|min:6|confirmed',
         ];
     }
 }

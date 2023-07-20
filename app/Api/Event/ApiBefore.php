@@ -9,7 +9,7 @@
  * @Link   https://gitee.com/xmo/MineAdmin
  */
 
-namespace App\APi\Event;
+namespace App\Api\Event;
 
 class ApiBefore
 {

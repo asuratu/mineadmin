@@ -1,10 +1,10 @@
 <?php
 
-namespace Api\Resource;
+namespace App\Api\Resource;
 
 use Hyperf\Resource\Json\JsonResource;
 
-class ShopUserResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class ShopUserResource extends JsonResource
     {
         return [
             'id' => $this['id'],
-            'username' => $this['username'],
+            'username' => $this['name'],
             'phone' => $this['phone'],
             'email' => $this['email'],
             'avatar' => $this['avatar'],

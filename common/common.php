@@ -1,12 +1,15 @@
 <?php
 // 自定义函数库
 
-if (! function_exists('env')) {
+use Hyperf\Utils\ApplicationContext;
+use Psr\Container\ContainerInterface;
+
+if (!function_exists('env')) {
 
     /**
      * 获取环境变量信息
      *
-     * @param string $key
+     * @param string     $key
      * @param mixed|null $default
      * @return mixed
      */
@@ -17,12 +20,12 @@ if (! function_exists('env')) {
 
 }
 
-if (! function_exists('config')) {
+if (!function_exists('config')) {
 
     /**
      * 获取配置信息
      *
-     * @param string $key
+     * @param string     $key
      * @param null|mixed $default
      * @return mixed
      */
@@ -33,16 +36,67 @@ if (! function_exists('config')) {
 
 }
 
-if (! function_exists('make')) {
+if (!function_exists('browser')) {
+    function browser(string $agent): string
+    {
+        if (false !== stripos($agent, "MSIE")) {
+            return 'MSIE';
+        }
+        if (false !== stripos($agent, "Edg")) {
+            return 'Edge';
+        }
+        if (false !== stripos($agent, "Chrome")) {
+            return 'Chrome';
+        }
+        if (false !== stripos($agent, "Firefox")) {
+            return 'Firefox';
+        }
+        if (false !== stripos($agent, "Safari")) {
+            return 'Safari';
+        }
+        if (false !== stripos($agent, "Opera")) {
+            return 'Opera';
+        }
+        return t('jwt.unknown');
+    }
+}
+
+if (!function_exists('os')) {
+    function os(string $agent): string
+    {
+        if (false !== stripos($agent, 'win') && preg_match('/nt 6.1/i', $agent)) {
+            return 'Windows 7';
+        }
+        if (false !== stripos($agent, 'win') && preg_match('/nt 6.2/i', $agent)) {
+            return 'Windows 8';
+        }
+        if (false !== stripos($agent, 'win') && preg_match('/nt 10.0/i', $agent)) {
+            return 'Windows 10';
+        }
+        if (false !== stripos($agent, 'win') && preg_match('/nt 11.0/i', $agent)) {
+            return 'Windows 11';
+        }
+        if (false !== stripos($agent, 'win') && preg_match('/nt 5.1/i', $agent)) {
+            return 'Windows XP';
+        }
+        if (false !== stripos($agent, 'linux')) {
+            return 'Linux';
+        }
+        if (false !== stripos($agent, 'mac')) {
+            return 'Mac';
+        }
+        return 'Unknown';
+    }
+}
+
+if (!function_exists('container')) {
 
     /**
-     * Create an object instance, if the DI container exist in ApplicationContext,
-     * then the object will be created by DI container via `make()` method, if not,
-     * the object will create by `new` keyword.
+     * Get container instance.
      */
-    function make(string $name, array $parameters = [])
+    function container(): ContainerInterface
     {
-        return \Hyperf\Support\make($name, $parameters);
+        return ApplicationContext::getContainer();
     }
 
 }

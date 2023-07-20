@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
+
 namespace App\System\Request;
 
+use App\System\Model\SystemUser;
 use App\System\Service\SystemUserService;
 use Mine\MineFormRequest;
 
@@ -25,7 +27,7 @@ class SystemUserRequest extends MineFormRequest
         return [
             'username' => 'required|max:20',
             'password' => 'required|min:6',
-            'dept_ids'  => 'required',
+            'dept_ids' => 'required',
             'role_ids' => 'required'
         ];
     }
@@ -38,7 +40,7 @@ class SystemUserRequest extends MineFormRequest
     {
         return [
             'username' => 'required|max:20',
-            'dept_ids'  => 'required',
+            'dept_ids' => 'required',
             'role_ids' => 'required'
         ];
     }
@@ -67,8 +69,8 @@ class SystemUserRequest extends MineFormRequest
             'oldPassword' => ['required', function ($attribute, $value, $fail) {
                 $service = $this->container->get(SystemUserService::class);
                 /* @var SystemUser $model */
-                $model = $service->mapper->getModel()::find((int) user()->getId(), ['password']);
-                if (! $service->mapper->checkPass($value, $model->password)) {
+                $model = $service->mapper->getModel()::find((int)user()->getId(), ['password']);
+                if (!$service->mapper->checkPass($value, $model->password)) {
                     $fail(t('system.valid_password'));
                 }
             }],
@@ -88,6 +90,7 @@ class SystemUserRequest extends MineFormRequest
 
     /**
      * 登录规则
+     *
      * @return string[]
      */
     public function loginRules(): array
