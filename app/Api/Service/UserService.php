@@ -47,4 +47,9 @@ class UserService extends AbstractService
     {
         return $this->mapper->existsByColumn("name", $username);
     }
+
+    public function getUserInfo(int $id): Model
+    {
+        return $this->mapper->findUserFromCache($id);
+    }
 }

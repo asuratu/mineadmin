@@ -8,6 +8,7 @@ use Api\Enums\Response\JwtErrCode;
 use Api\Enums\User\UserStatus;
 use Api\Exception\BusinessException;
 use App\Api\Event\ApiUserLoginAfter;
+use App\Api\Event\ApiUserLogout;
 use App\Api\Mapper\UserMapper;
 use App\Shop\Model\ShopUser;
 use Hyperf\Di\Annotation\Inject;
@@ -114,5 +115,23 @@ class AuthService extends AbstractService
             'token' => $token,
         ];
     }
+
+    public function refresh(string $token): array
+    {
+        $user = user('api');
+        return ['token' => $user->getJwt()->refreshToken($token)];
+    }
+
+    /**
+     * @Title: 退出登录
+     * @throws InvalidArgumentException
+     */
+    public function logout(): void
+    {
+        $user = user('api');
+        $this->evDispatcher->dispatch(new ApiUserLogout($user->getUserInfo()));
+        $user->getJwt()->logout();
+    }
+
 
 }

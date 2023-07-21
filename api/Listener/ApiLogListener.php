@@ -12,9 +12,9 @@
 namespace Api\Listener;
 
 use App\System\Service\SystemApiLogService;
+use Hyperf\Coroutine\Coroutine;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
-use Hyperf\Utils\Coroutine;
 use Mine\Event\ApiAfter;
 use Mine\Helper\Str;
 use Mine\MineRequest;
@@ -50,6 +50,7 @@ class ApiLogListener implements ListenerInterface
     public function process(object $event): void
     {
         $data = $event->getApiData();
+        console()->info("SystemApiLogService", $data);
         $request = container()->get(MineRequest::class);
         $service = container()->get(SystemApiLogService::class);
 
@@ -73,13 +74,11 @@ class ApiLogListener implements ListenerInterface
 
             // 返回内容以免过大，暂不保存访问内容
             // $responseData => $response->getBody()->getContents(),
-            $responseData = '';
-
 
             $ip = $request->ip();
             $ipLocation = Str::ipToRegion($ip);
             $accessTime = date('Y-m-d H:i:s');
-            Coroutine::create(function () use ($service, $app_id, $data, $reqData, $queryParams, $responseCode, $responseData, $ip, $ipLocation, $accessTime) {
+            Coroutine::create(function () use ($service, $app_id, $data, $reqData, $queryParams, $responseCode, $ip, $ipLocation, $accessTime) {
                 // 随机延时写入
                 sleep(rand(5, 30));
                 $service->save([
@@ -88,7 +87,6 @@ class ApiLogListener implements ListenerInterface
                     'access_name' => $data['access_name'],
                     'request_data' => ['data' => $reqData, 'params' => $queryParams],
                     'response_code' => $responseCode,
-                    // 'response_data' => $responseData,
                     'ip' => $ip,
                     'ip_location' => $ipLocation,
                     'access_time' => $accessTime
