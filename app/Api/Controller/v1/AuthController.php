@@ -8,6 +8,7 @@ use App\Api\Request\Users\UserAccountLoginRequest;
 use App\Api\Request\Users\UserRegisterRequest;
 use App\Api\Resource\UserLoginResource;
 use App\Api\Resource\UserResource;
+use App\Api\Service\AsyncQueueService;
 use App\Api\Service\AuthService;
 use App\Api\Service\UserService;
 use Hyperf\Di\Annotation\Inject;
@@ -28,6 +29,9 @@ class AuthController extends BaseController
 
     #[Inject]
     protected UserService $userService;
+
+    #[Inject]
+    protected AsyncQueueService $asyncQueue;
 
     /**
      * @Title  : 用户账号密码注册
@@ -71,6 +75,15 @@ class AuthController extends BaseController
     #[GetMapping("me"), Auth("api")]
     public function me(): ResponseInterface
     {
+        console()->info('----------- me -----------');
+
+        // 测试 async-queue 投递消息
+        $this->asyncQueue->handleMessage([
+            'group@hyperf.io',
+            'https://doc.hyperf.io',
+            'https://www.hyperf.io',
+        ]);
+
         $id = user('api')->getId();
         $result = $this->userService->getUserInfo($id);
         return $this->success(new UserResource($result));

@@ -11,8 +11,10 @@
   "license": "Apache-2.0",
   "require": {
     "ext-redis": "*",
+    "hyperf/async-queue": "^3.0",
     "hyperf/model-cache": "^3.0",
     "hyperf/resource": "^3.0",
+    "hyperf/signal": "^3.0",
     "lishun/enums": "^1.0",
     "xmo/jwt-auth": "^0.5.0",
     "xmo/mine-core": "1.4.*",

@@ -9,13 +9,16 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
+use Monolog\Level;
+
 return [
     'default' => [
         'handler' => [
             'class' => Monolog\Handler\RotatingFileHandler::class,
             'constructor' => [
                 'filename' => BASE_PATH . '/runtime/logs/debug/mine.log',
-                'level' => Monolog\Logger::DEBUG,
+                'level' => Level::Debug,
             ],
         ],
         'formatter' => [
