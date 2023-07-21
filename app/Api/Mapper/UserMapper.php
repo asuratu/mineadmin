@@ -33,9 +33,13 @@ class UserMapper extends AbstractMapper
         return $this->model::create($data);
     }
 
+    public function findUserFromCache(int $id): User
+    {
+        return $this->model::findFromCache($id);
+    }
+
     public function checkByColumn(string $column, string $str): Model|Builder
     {
-        // 使用模型缓存
         return $this->model::query()
             ->where($column, $str)
             ->firstOrFail();

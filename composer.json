@@ -10,12 +10,13 @@
   "description": "Quickly build a background management system for web applications",
   "license": "Apache-2.0",
   "require": {
+    "ext-redis": "*",
+    "hyperf/model-cache": "^3.0",
     "hyperf/resource": "^3.0",
     "lishun/enums": "^1.0",
     "xmo/jwt-auth": "^0.5.0",
     "xmo/mine-core": "1.4.*",
-    "xmo/mine-office": "1.3.*",
-    "ext-redis": "*"
+    "xmo/mine-office": "1.3.*"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.0",

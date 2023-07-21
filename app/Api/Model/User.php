@@ -6,6 +6,7 @@ namespace App\Api\Model;
 
 use Carbon\Carbon;
 use Hyperf\Database\Model\SoftDeletes;
+use Hyperf\ModelCache\Cacheable;
 
 /**
  * @property int    $id                主键
@@ -20,7 +21,7 @@ use Hyperf\Database\Model\SoftDeletes;
  */
 class User extends BaseModel
 {
-    use SoftDeletes;
+    use SoftDeletes, Cacheable;
 
     /**
      * The table associated with the model.

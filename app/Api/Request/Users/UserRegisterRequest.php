@@ -24,6 +24,7 @@ class UserRegisterRequest extends MineApiFormRequest
     {
         return [
             'name' => 'required|max:20',
+            'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
         ];
     }
