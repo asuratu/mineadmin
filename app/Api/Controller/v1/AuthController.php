@@ -15,6 +15,7 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\RateLimit\Annotation\RateLimit;
 use Mine\Annotation\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -22,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
 #[Controller(prefix: "api/v1/auth")]
+#[RateLimit(limitCallback: [Parent::class, 'limitCallback'])]
 class AuthController extends BaseController
 {
     #[Inject]
@@ -73,21 +75,25 @@ class AuthController extends BaseController
      * @author AsuraTu
      */
     #[GetMapping("me"), Auth("api")]
+    #[RateLimit(create: 1, consume: 3, capacity: 3, waitTimeout: 1)]
     public function me(): ResponseInterface
     {
+        return $this->success('这是测试限流');
+
         console()->info('----------- me -----------');
 
         // 测试 async-queue 投递消息
-        $this->asyncQueue->handleMessage([
-            'group@hyperf.io',
-            'https://doc.hyperf.io',
-            'https://www.hyperf.io',
-        ]);
+        //        $this->asyncQueue->handleMessage([
+        //            'group@hyperf.io',
+        //            'https://doc.hyperf.io',
+        //            'https://www.hyperf.io',
+        //        ]);
 
         $id = user('api')->getId();
         $result = $this->userService->getUserInfo($id);
         return $this->success(new UserResource($result));
     }
+
 
     /**
      * @Title  : 刷新token

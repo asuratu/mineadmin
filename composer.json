@@ -13,6 +13,7 @@
     "ext-redis": "*",
     "hyperf/async-queue": "^3.0",
     "hyperf/model-cache": "^3.0",
+    "hyperf/rate-limit": "^3.0",
     "hyperf/resource": "^3.0",
     "hyperf/signal": "^3.0",
     "lishun/enums": "^1.0",

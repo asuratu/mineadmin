@@ -35,4 +35,7 @@ enum BusinessErrCode: int implements EnumCodeInterface
 
     #[EnumCode('用户密码错误')]
     case USER_PASSWORD_ERROR = 1005;
+
+    #[EnumCode('请求过于频繁')]
+    case TOO_MANY_REQUESTS = 1006;
 }

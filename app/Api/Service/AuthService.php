@@ -133,5 +133,4 @@ class AuthService extends AbstractService
         $user->getJwt()->logout();
     }
 
-
 }
