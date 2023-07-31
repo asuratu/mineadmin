@@ -1,6 +1,7 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\System\Service;
 
 use App\System\Mapper\SystemQueueMessageMapper;
@@ -9,11 +10,14 @@ use App\System\Vo\QueueMessageVo;
 use Mine\Abstracts\AbstractService;
 use Mine\Annotation\DependProxy;
 use Mine\Interfaces\ServiceInterface\QueueMessageServiceInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Throwable;
 
 /**
  * 信息管理服务类
  */
-#[DependProxy(values: [ QueueMessageServiceInterface::class ])]
+#[DependProxy(values: [QueueMessageServiceInterface::class])]
 class SystemQueueMessageService extends AbstractService implements QueueMessageServiceInterface
 {
     /**
@@ -28,6 +32,7 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
 
     /**
      * 获取用户未读消息
+     *
      * @param int $id
      * @return mixed
      */
@@ -45,6 +50,7 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
 
     /**
      * 获取收信箱列表数据
+     *
      * @param array $params
      * @return array
      */
@@ -57,6 +63,7 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
 
     /**
      * 获取已发送列表数据
+     *
      * @param array $params
      * @return array
      */
@@ -69,11 +76,12 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
 
     /**
      * 发私信
+     *
      * @param array $data
      * @return bool
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Throwable
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Throwable
      */
     public function sendPrivateMessage(array $data): bool
     {
@@ -83,12 +91,13 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
         // 固定私信类型
         $queueMessage->setContentType(SystemQueueMessage::TYPE_PRIVATE_MESSAGE);
         $queueMessage->setSendBy(user()->getId());
-        return push_queue_message($queueMessage, $data['users']) !== -1;
+        return push_queue_message($queueMessage, $data['users']) != -1;
     }
 
     /**
      * 获取接收人列表
-     * @param int $id
+     *
+     * @param int   $id
      * @param array $params
      * @return array
      */
@@ -99,9 +108,10 @@ class SystemQueueMessageService extends AbstractService implements QueueMessageS
 
     /**
      * 更新中间表数据状态
-     * @param array $ids
+     *
+     * @param array  $ids
      * @param string $columnName
-     * @param int $value
+     * @param int    $value
      * @return bool
      */
     public function updateDataStatus(array $ids, string $columnName = 'read_status', int $value = 2): bool

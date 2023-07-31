@@ -83,11 +83,11 @@ class AuthController extends BaseController
         console()->info('----------- me -----------');
 
         // 测试 async-queue 投递消息
-        //        $this->asyncQueue->handleMessage([
-        //            'group@hyperf.io',
-        //            'https://doc.hyperf.io',
-        //            'https://www.hyperf.io',
-        //        ]);
+        $this->asyncQueue->handleMessage([
+            'group@hyperf.io',
+            'https://doc.hyperf.io',
+            'https://www.hyperf.io',
+        ]);
 
         $id = user('api')->getId();
         $result = $this->userService->getUserInfo($id);

@@ -96,7 +96,7 @@ if (!function_exists('container')) {
      */
     function container(): ContainerInterface
     {
-        return ApplicationContext::getContainer();
+        return \Hyperf\Context\ApplicationContext::getContainer();
     }
 
 }

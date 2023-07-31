@@ -51,7 +51,7 @@ class ServerController implements OnMessageInterface, OnOpenInterface, OnCloseIn
 
         console()->info(
             "WebSocket [ user connection to message server: id > $uid, " .
-            "fd > {$request->fd}, time > " . date('Y-m-d H:i:s') . ' ]'
+            "fd > $request->fd, time > " . date('Y-m-d H:i:s') . ' ]'
         );
     }
 

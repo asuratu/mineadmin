@@ -21,7 +21,6 @@ class UsersController extends MineController
 
     /**
      * 列表
-     *
      * @return ResponseInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
